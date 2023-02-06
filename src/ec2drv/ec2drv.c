@@ -116,8 +116,6 @@ static DBG_ADAPTER_INFO debugger_info[] =
 	.min_ver		= 0x07,
 	.max_ver		= 0x28
 	},
-// toolstick not supported, verified.
-#if 0
 	{
 	.name			= "ToolStick F330 DC",
 	.usb_vendor_id	= 0x10c4,
@@ -126,7 +124,6 @@ static DBG_ADAPTER_INFO debugger_info[] =
 	.usb_in_endpoint  = 0x81,
 	.has_bootloader	= FALSE,
 	}
-#endif 
 };
 
 
@@ -402,6 +399,10 @@ void ec2_disconnect( EC2DRV *obj )
 			int r;
 	
 			c2_disconnect_target(obj);
+
+                        if(isToolStick(obj))
+                                return;
+
 			write_usb_ch(obj, 0xff);	// turn off debugger
 			// Read and discard the response. Otherwise it can remain
 			// buffered on the EC3 and be unexpectedly returned to the
@@ -2253,3 +2254,13 @@ DBG_ADAPTER_INFO *ec2_GetDbgInfo( uint16_t usb_vendor_id,
 	}
 	return 0;	// not found
 }
+
+/** check the debugger is ToolStick or NOT
+*/
+BOOL isToolStick(EC2DRV *obj)
+{
+  DUMP_FUNC();
+  return (obj->dbg_info->usb_vendor_id == 0x10c4 &&
+          obj->dbg_info->usb_product_id == 0x8253);
+}
+
