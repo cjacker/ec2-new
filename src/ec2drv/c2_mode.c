@@ -152,8 +152,8 @@ void c2_disconnect_target( EC2DRV *obj )
         //ffff9fcf57448f00 2927724769 S Co:1:022:0 s 21 0a 0000 0000 0000 0
         if(isToolStick(obj)) {
                 char *ctrlbuf="\x40\x02";
-                usb_control_msg(obj->ec3, 0x21, 0x09, 0x0340, 0x0002, ctrlbuf, 2, 5000);
-                usb_control_msg(obj->ec3, 0x21, 0x0a, 0x0000, 0x0000, NULL, 0, 5000);
+                usb_control_msg(obj->ec3, 0x21, 0x09, 0x0340, 0x0002, ctrlbuf, 2, 1000);
+                usb_control_msg(obj->ec3, 0x21, 0x0a, 0x0000, 0x0000, NULL, 0, 1000);
         }
 }
 
